@@ -83,10 +83,15 @@ module BitPay
         invoice["data"]
       end
 
+      def get_invoices(params = {}) 
+        token = get_token('merchant')    
+        invoice = get(path: "invoices", token: token, params: params)
+        invoice["data"]
+      end
+
       ## Gets the public version of the invoice
-      #
       def get_public_invoice(id:)
-        invoice = get(path: "invoices/#{id}", public: true)
+        invoice = get(path: "invoices/#{id}", public_request: true)
         invoice["data"]
       end
       

@@ -8,7 +8,7 @@ module BitPay
       token ||= get_token(facade)
       case verb.upcase
       when "GET"
-        return get(path: path, token: token)
+        return get(path: path, token: token, params: params)
       when "POST"
         return post(path: path, token: token, params: params)
       else
@@ -16,12 +16,12 @@ module BitPay
       end
     end
 
-    def get(path:, token: nil, public: false)
-      urlpath = '/' + path
-      token_prefix = if urlpath.include? '?' then '&token=' else '?token=' end
-      urlpath = urlpath + token_prefix + token if token
+    def get(path:, token: nil, public_request: false, params: {})
+      urlpath = '/' + path + '?'
+      urlpath = urlpath + 'token=' + token if token
+      urlpath = urlpath + '&' + params.to_param if params.present?
       request = Net::HTTP::Get.new urlpath
-      unless public
+      unless public_request
         request['X-Signature'] = KeyUtils.sign(@uri.to_s + urlpath, @priv_key) 
         request['X-Identity'] = @pub_key
       end
