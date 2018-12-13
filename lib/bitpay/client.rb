@@ -66,7 +66,7 @@ module BitPay
         raise BitPay::ArgumentError, "Illegal Argument: Price must be formatted as a float" unless 
           price.is_a?(Numeric) ||
           /^[[:digit:]]+(\.[[:digit:]]{2})?$/.match(price) ||
-          currency == 'BTC' && /^[[:digit:]]+(\.[[:digit:]]{1,6})?$/.match(price)
+          currency == 'BTC' && /^[[:digit:]]+(\.[[:digit:]]{1,8})?$/.match(price)
         raise BitPay::ArgumentError, "Illegal Argument: Currency is invalid." unless /^[[:upper:]]{3}$/.match(currency)
         params.merge!({price: price, currency: currency})
         token = get_token(facade)
